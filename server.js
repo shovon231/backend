@@ -57,6 +57,7 @@ app.post("/login", function(req, res) {
         console.log("result", result)
         if (result.length === 0) {
           console.log("password didn't match!!")
+
           res.send(JSON.stringify({ success: false }))
           return
         }
