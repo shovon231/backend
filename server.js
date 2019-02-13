@@ -83,6 +83,25 @@ app.post("/login", function(req, res) {
   //   res.send(JSON.stringify({ success: false }))
 })
 
+app.post("/post", function(req, res) {
+  console.log("**** inside in the post endpoint")
+  let body = JSON.parse(req.body)
+  MongoClient.connect(url, (err, db) => {
+    if (err) throw err
+    let dbo = db.db("mydb")
+    dbo.collection("post").insertOne(body, (err, result) => {
+      if (err) throw err
+      console.log("success")
+      let response = {
+        status: true,
+        message: "successfuly insert data"
+      }
+      db.close()
+      res.send(JSON.stringify(response))
+    })
+  })
+})
+
 app.listen(80, function() {
   console.log("Server started on port 80")
 })
