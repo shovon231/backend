@@ -27,7 +27,7 @@ app.post("/signup", function(req, res) {
         message: "successfuly insert data"
       }
       db.close()
-      res.send(JSON.stringify({ response }))
+      res.send(JSON.stringify(response))
     })
   })
 })
