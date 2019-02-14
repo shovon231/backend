@@ -79,7 +79,7 @@ app.post("/login", function(req, res) {
 
 app.post("/post", upload.single("product-image"), function(req, res) {
   console.log("**** inside in the category endpoint")
-  console.log("body", req.body.toString())
+  //console.log("body", req.body.toString())
   let body = JSON.parse(req.body)
   console.log("parsed body", body)
   let extension = req.file.originalname.split(".").pop()
