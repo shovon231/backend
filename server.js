@@ -1,8 +1,12 @@
 let express = require("express")
 let cors = require("cors")
 let bodyParser = require("body-parser")
-let upload = require("multer")
+var fs = require("fs")
+let multer = require("multer")
+let upload = multer({ dest: __dirname + "/images/" })
+
 let app = express()
+
 app.use(cors())
 app.use(bodyParser.raw({ type: "*/*" }))
 const MongoClient = require("mongodb").MongoClient
@@ -20,7 +24,7 @@ app.post("/signup", function(req, res) {
   MongoClient.connect(url, (err, db) => {
     if (err) throw err
     let dbo = db.db("mydb")
-    dbo.collection("body").insertOne(body, (err, result) => {
+    dbo.collections("user").insertOne(body, (err, result) => {
       if (err) throw err
       console.log("success")
       let response = {
@@ -73,15 +77,17 @@ app.post("/login", function(req, res) {
   })
 })
 
-app.post("/post", function(req, res) {
+app.post("/post", upload.single("product-image"), function(req, res) {
   console.log("**** inside in the category endpoint")
   console.log("body", req.body.toString())
   let body = JSON.parse(req.body)
   console.log("parsed body", body)
+  let extension = req.file.originalname.split(".").pop()
+  fs.rename(req.file.path, req.file.path + "." + extension)
   MongoClient.connect(url, (err, db) => {
     if (err) throw err
     let dbo = db.db("mydb")
-    dbo.collection("category").insertOne(body, (err, result) => {
+    dbo.collections("category").insertOne(body, (err, result) => {
       if (err) throw err
       console.log("success")
       let response = {
