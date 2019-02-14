@@ -74,13 +74,14 @@ app.post("/login", function(req, res) {
 })
 
 app.post("/post", function(req, res) {
-  console.log("**** inside in the accounting insert endpoint")
+  console.log("**** inside in the category endpoint")
+  console.log("body", req.body.toString())
   let body = JSON.parse(req.body)
-  console.log("body", req.body)
+  console.log("parsed body", body)
   MongoClient.connect(url, (err, db) => {
     if (err) throw err
     let dbo = db.db("mydb")
-    dbo.collection("accounting").insertOne(body, (err, result) => {
+    dbo.collection("category").insertOne(body, (err, result) => {
       if (err) throw err
       console.log("success")
       let response = {
