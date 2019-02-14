@@ -78,7 +78,7 @@ app.post("/login", function(req, res) {
 })
 
 //upload.single("product-image"),
-app.post("/post", upload.single("product-image"), function(req, res) {
+app.post("/post", upload.single("product-image"), (req, res) => {
   console.log("**** inside in the category endpoint")
   console.log("body", req.file)
   let body = JSON.parse(req.body)
