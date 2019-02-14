@@ -77,13 +77,14 @@ app.post("/login", function(req, res) {
   })
 })
 
-app.post("/post", upload.single("product-image"), function(req, res) {
+//upload.single("product-image"),
+app.post("/post", function(req, res) {
   console.log("**** inside in the category endpoint")
   //console.log("body", req.body.toString())
   let body = JSON.parse(req.body)
   console.log("parsed body", body)
-  let extension = req.file.originalname.split(".").pop()
-  fs.rename(req.file.path, req.file.path + "." + extension)
+  // let extension = req.file.originalname.split(".").pop()
+  // fs.rename(req.file.path, req.file.path + "." + extension)
   MongoClient.connect(url, (err, db) => {
     if (err) throw err
     let dbo = db.db("mydb")
