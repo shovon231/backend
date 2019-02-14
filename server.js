@@ -73,7 +73,7 @@ app.post("/login", function(req, res) {
   })
 })
 
-app.post("/accounting", (req, res) => {
+app.post("/post", function(req, res) {
   console.log("**** inside in the accounting insert endpoint")
   let body = JSON.parse(req.body)
   console.log("body", req.body)
