@@ -3,12 +3,12 @@ let cors = require("cors")
 let bodyParser = require("body-parser")
 var fs = require("fs")
 let multer = require("multer")
-let upload = multer({ dest: __dirname + "/images/" })
+let upload = multer({ dest: "./images/" })
 
 let app = express()
 
 app.use(cors())
-app.use(bodyParser.raw({ type: "*/*" }))
+// app.use(bodyParser.raw({ type: "*/*" }))
 const MongoClient = require("mongodb").MongoClient
 const url = "mongodb://admin:admin123@ds225375.mlab.com:25375/mydb"
 let genarateId = function() {
@@ -80,15 +80,28 @@ app.post("/login", function(req, res) {
 //upload.single("product-image"),
 app.post("/post", upload.single("product-image"), (req, res) => {
   console.log("**** inside in the category endpoint")
-  console.log("body", req.file)
-  let body = JSON.parse(req.body)
-  console.log("parsed body", body)
-  // let extension = req.file.originalname.split(".").pop()
-  // fs.rename(req.file.path, req.file.path + "." + extension)
+  console.log("body", req.body)
+  //  let body = JSON.parse(req.body)
+  console.log("parsed body", req.body)
+  let extension = req.file.originalname.split(".").pop()
+  console.log("extension", extension)
+  let newName = fs.rename(
+    req.file.path,
+    req.file.path + "." + extension,
+    () => {}
+  )
+  console.log("new name", newName)
+
   MongoClient.connect(url, (err, db) => {
-    if (err) throw err
+    console.log("****inside the mongoclient db")
+    console.log("url", url)
+    console.log("err", err)
+    console.log("db", db)
+    if (err) {
+      throw err
+    }
     let dbo = db.db("mydb")
-    dbo.collections("category").insertOne(body, (err, result) => {
+    dbo.collection("category").insertOne(req.body, (err, result) => {
       if (err) throw err
       console.log("success")
       let response = {
@@ -100,7 +113,7 @@ app.post("/post", upload.single("product-image"), (req, res) => {
     })
   })
 })
-
+app.use(bodyParser.raw({ type: "*/*" }))
 app.post("/accountingr", function(req, res) {
   console.log("**** inside in the retrive endpoint")
   let body = JSON.parse(req.body)
