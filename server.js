@@ -78,9 +78,9 @@ app.post("/login", function(req, res) {
 })
 
 //upload.single("product-image"),
-app.post("/post", function(req, res) {
+app.post("/post", upload.single("product-image"), function(req, res) {
   console.log("**** inside in the category endpoint")
-  console.log("body", JSON.stringify({ req: "body" }))
+  console.log("body", req.file)
   let body = JSON.parse(req.body)
   console.log("parsed body", body)
   // let extension = req.file.originalname.split(".").pop()
