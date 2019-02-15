@@ -50,7 +50,7 @@ app.post("/post", upload.single("product-image"), (req, res) => {
 //   res.send("goodbye world")
 // })
 
-app.get("/getItem", (req, res) => {
+app.get("/getitem", (req, res) => {
   console.log("***** in the getReviews")
   MongoClient.connect(url, function(err, db) {
     console.log("connected")
@@ -59,22 +59,22 @@ app.get("/getItem", (req, res) => {
     var dbo = db.db("mydb")
     console.log("after dbo")
     dbo
-      .collection("review")
+      .collection("category")
       .find({})
       .toArray(function(err, result) {
         if (err) throw err
-        console.log(result)
-        let y = function(x) {
-          return x.category
-        }
-        let x = result.map(y)
-        let response = {
-          status: true,
-          images: x
-        }
-
+        // console.log(result)
+        // let y = function(x) {
+        //   return x.category
+        // }
+        // let x = result.map(y)
+        // let response = {
+        //   status: true,
+        //   images: x
+        // }
+        console.log("result", result)
         db.close()
-        res.send(JSON.stringify(response))
+        res.send(JSON.stringify(result))
       })
   })
 })
