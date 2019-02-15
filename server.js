@@ -44,7 +44,7 @@ app.post("/post", upload.single("product-image"), (req, res) => {
   })
 })
 
-app.get("/additem", (req, res) => {
+app.get("/getitem", (req, res) => {
   console.log("***** in the getitems")
   //let body = JSON.parse(req.body)
   console.log("req.query", req.query)
