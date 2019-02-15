@@ -20,7 +20,6 @@ app.post("/post", upload.single("product-image"), (req, res) => {
   let extension = req.file.originalname.split(".").pop()
   console.log("extension", extension)
 
-  // let newName =
   fs.renameSync(req.file.path, req.file.path + "." + extension)
   let newName = req.file.filename + "." + extension
   console.log("new name", newName, extension)
@@ -38,7 +37,6 @@ app.post("/post", upload.single("product-image"), (req, res) => {
         let responseBody = {
           status: true,
           message: "successfuly insert data"
-          //image: newName
         }
         db.close()
         res.send(JSON.stringify(responseBody))
@@ -46,44 +44,50 @@ app.post("/post", upload.single("product-image"), (req, res) => {
   })
 })
 
-// app.get("/", (req, res) => {
-//   res.send("goodbye world")
-// })
+app.use(bodyParser.raw({ type: "*/*" }))
 
 app.get("/getitem", (req, res) => {
-  console.log("***** in the getReviews")
-  MongoClient.connect(url, function(err, db) {
-    console.log("connected")
-    if (err) throw err
-    console.log("after error")
-    var dbo = db.db("mydb")
-    console.log("after dbo")
-    dbo
-      .collection("category")
-      .find({})
-      .toArray(function(err, result) {
-        if (err) throw err
-        // console.log(result)
-        // let y = function(x) {
-        //   return x.category
-        // }
-        // let x = result.map(y)
-        // let response = {
-        //   status: true,
-        //   images: x
-        // }
-        console.log("result", result)
-        db.close()
-        res.send(JSON.stringify(result))
-      })
-  })
+  console.log("***** in the getitems")
+  //let body = JSON.parse(req.body)
+  console.log("req.query", req.query)
+  let category = req.query.category
+
+  if (category === undefined) {
+    MongoClient.connect(url, function(err, db) {
+      console.log("connected")
+      if (err) throw err
+      console.log("after error")
+      var dbo = db.db("mydb")
+      console.log("after dbo")
+      dbo
+        .collection("category")
+        .find({})
+        .toArray(function(err, result) {
+          if (err) throw err
+          console.log("result", result)
+          db.close()
+          res.send(JSON.stringify(result))
+        })
+    })
+  } else {
+    MongoClient.connect(url, function(err, db) {
+      console.log("connected")
+      if (err) throw err
+      console.log("after error")
+      var dbo = db.db("mydb")
+      console.log("after dbo")
+      dbo
+        .collection("category")
+        .find({ category })
+        .toArray(function(err, result) {
+          if (err) throw err
+          console.log("result", result)
+          db.close()
+          res.send(JSON.stringify(result))
+        })
+    })
+  }
 })
-
-// app.get("/get", function(res, req) {
-//   res.send("")
-// })
-
-app.use(bodyParser.raw({ type: "*/*" }))
 
 app.post("/signup", function(req, res) {
   console.log("**** inside in the signup endpoint")
