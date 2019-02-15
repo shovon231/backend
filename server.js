@@ -44,15 +44,13 @@ app.post("/post", upload.single("product-image"), (req, res) => {
   })
 })
 
-app.use(bodyParser.raw({ type: "*/*" }))
-
 app.get("/getitem", (req, res) => {
   console.log("***** in the getitems")
   //let body = JSON.parse(req.body)
   console.log("req.query", req.query)
   let category = req.query.category
 
-  if (category === undefined) {
+  if (category === "") {
     MongoClient.connect(url, function(err, db) {
       console.log("connected")
       if (err) throw err
@@ -88,6 +86,8 @@ app.get("/getitem", (req, res) => {
     })
   }
 })
+
+app.use(bodyParser.raw({ type: "*/*" }))
 
 app.post("/signup", function(req, res) {
   console.log("**** inside in the signup endpoint")
