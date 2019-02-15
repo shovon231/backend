@@ -44,7 +44,31 @@ app.post("/post", upload.single("product-image"), (req, res) => {
   })
 })
 
-app.get("/getitem", (req, res) => {
+app.get("/additem", (req, res) => {
+  console.log("***** in the getitems")
+  //let body = JSON.parse(req.body)
+  console.log("req.query", req.query)
+  let category = req.body
+
+  MongoClient.connect(url, function(err, db) {
+    console.log("connected")
+    if (err) throw err
+    console.log("after error")
+    var dbo = db.db("mydb")
+    console.log("after dbo")
+    dbo
+      .collection("category")
+      .find({})
+      .toArray(function(err, result) {
+        if (err) throw err
+        console.log("result", result)
+        db.close()
+        res.send(JSON.stringify(result))
+      })
+  })
+})
+
+app.get("/searchitem", (req, res) => {
   console.log("***** in the getitems")
   //let body = JSON.parse(req.body)
   console.log("req.query", req.query)
