@@ -44,29 +44,29 @@ app.post("/post", upload.single("product-image"), (req, res) => {
   })
 })
 
-// app.get("/getitem", (req, res) => {
-//   console.log("***** in the getitems")
-//   let body = JSON.parse(req.body)
-//   console.log("req.query", body)
-//   //let category = req.body
-//   console.log("category", category)
-//   MongoClient.connect(url, function(err, db) {
-//     console.log("connected")
-//     if (err) throw err
-//     console.log("after error")
-//     var dbo = db.db("mydb")
-//     console.log("after dbo")
-//     dbo
-//       .collection("category")
-//       .find({})
-//       .toArray(function(err, result) {
-//         if (err) throw err
-//         console.log("result", result)
-//         db.close()
-//         res.send(JSON.stringify(result))
-//       })
-//   })
-// })
+app.get("/getitem", (req, res) => {
+  console.log("***** in the getitems")
+  //let body = JSON.parse(req.body)
+  let body = req.body
+  console.log("req.query", body)
+  //console.log("category", category)
+  MongoClient.connect(url, function(err, db) {
+    console.log("connected")
+    if (err) throw err
+    console.log("after error")
+    var dbo = db.db("mydb")
+    console.log("after dbo")
+    dbo
+      .collection("category")
+      .find({})
+      .toArray(function(err, result) {
+        if (err) throw err
+        console.log("result", result)
+        db.close()
+        res.send(JSON.stringify(result))
+      })
+  })
+})
 
 app.get("/searchitem", (req, res) => {
   console.log("***** in the getitems")
@@ -113,42 +113,43 @@ app.get("/searchitem", (req, res) => {
 
 app.use(bodyParser.raw({ type: "*/*" }))
 
-app.post("/getitem", (req, res) => {
-  console.log("***** in the searchByName")
-  console.log("body", req.body.toString())
-  // let body = JSON.parse(req.body)
-  //let review = JSON.parse(req.body)
-  let body = JSON.parse(req.body)
-  let category = body.category
-  console.log("category", category)
+// app.post("/getitem", (req, res) => {
+//   console.log("***** in the get Item by category")
+//   console.log("body", req.body.toString())
+//   let body = JSON.parse(req.body)
+//   //let review = JSON.parse(req.body)
+//   // let body = req.body
+//   // console.log(body)
+//   // let category = body.category.toString()
+//   // console.log("category", category)
 
-  console.log("body", body)
-  MongoClient.connect(url, function(err, db) {
-    console.log("connected")
-    if (err) throw err
-    console.log("after error")
-    var dbo = db.db("mydb")
-    console.log("after dbo")
-    dbo
-      .collection("category")
-      .find({ category: category })
-      .toArray(function(err, result) {
-        if (err) throw err
-        console.log(result)
-        // let y = function(x) {
-        //   return x.review
-        // }
-        // let x = result.map(y)
-        let response = {
-          status: true,
-          reviews: "result"
-        }
+//   console.log("body", body.toString())
+//   MongoClient.connect(url, function(err, db) {
+//     console.log("connected")
+//     if (err) throw err
+//     console.log("after error")
+//     var dbo = db.db("mydb")
+//     console.log("after dbo")
+//     dbo
+//       .collection("category")
+//       .find({ category: body.category })
+//       .toArray(function(err, result) {
+//         if (err) throw err
+//         console.log(result)
+//         // let y = function(x) {
+//         //   return x.review
+//         // }
+//         // let x = result.map(y)
+//         let response = {
+//           status: true,
+//           reviews: "result"
+//         }
 
-        db.close()
-        res.send(JSON.stringify(result))
-      })
-  })
-})
+//         db.close()
+//         res.send(JSON.stringify(result))
+//       })
+//   })
+// })
 
 app.post("/signup", function(req, res) {
   console.log("**** inside in the signup endpoint")
